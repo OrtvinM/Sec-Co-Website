@@ -16,15 +16,15 @@ INSERT INTO projects (idProjects, projectName, GitLink) VALUES
 
 -- Insert test data into users
 INSERT INTO users (idusers, userName, firstName, lastName, email, hashed_password) VALUES
-(1, 'Om', 'Ortvin', 'M', 'ortvin14@gmail.com', 'F1bb2Kv@lmnOqF'),
-(2, 'SBwilder', 'Stevn', 'Backs', 'SB@gmail.com', 'F1bb2Kv@lmnO'),
-(3, 'MrNightmare', 'worse', 'User', 'Wronguser@yahoo.com', 'F1bb2Kv@lmnOgg');
+(1, 'Om', 'Ortvin', 'M', 'ortvin14@gmail.com', 'F1bb2Kv@lmnOqF');
 
+-- (2, 'SBwilder', 'Stevn', 'Backs', 'SB@gmail.com', 'F1bb2Kv@lmnO')
 
 -- Insert test data into views
 INSERT INTO views (userID, projectID) VALUES
-(1, 1), --  Ortvin M visits Sec-Co
-(2, 1); --  Steven Backs visits Sec-Co
+(1, 1); --  Ortvin M visits Sec-Co
+
+-- (2, 1); --  Steven Backs visits Sec-Co
 
 -- veiw the tables
 TABLE users;

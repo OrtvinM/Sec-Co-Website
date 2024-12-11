@@ -36,6 +36,7 @@ db.connect((err) => {
         console.log('Connected to database');
     }
 });
+
 global.db = db;
 // Define our application-specific data
 app.locals.siteData = { siteName: "Sec Co - Ortvin M Portfolio project" };
