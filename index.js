@@ -5,6 +5,9 @@ const ejs = require('ejs');
 // Import mysql2 module
 const mysql = require('mysql2');
 
+// Import session module
+const session = require('express-session');
+
 // Create the express application object
 const app = express();
 const port = 8000;
@@ -17,6 +20,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // Set up public folder (for CSS and static JS)
 app.use(express.static(__dirname + '/public'));
+
+// Create a session
+app.use(session({
+    secret: 'BackwardsDucksGoThirteenMaybeStation',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        expires: 600000
+    }
+}));
 
 // Define the database connection
 const db = mysql.createConnection({
@@ -38,16 +51,21 @@ db.connect((err) => {
 });
 
 global.db = db;
+
 // Define our application-specific data
 app.locals.siteData = { siteName: "Sec Co - Ortvin M Portfolio project" };
+
 // Load the route handlers
 const mainRoutes = require("./routes/main");
 app.use('/', mainRoutes);
+
 // Load the route handlers for /users
 const usersRoutes = require('./routes/users');
 app.use('/users', usersRoutes);
+
 // Load the route handlers for /projects
 const projectsRoutes = require('./routes/projects');
 app.use('/projects', projectsRoutes);
+
 // Start the web app listening
 app.listen(port, () => console.log(`Node app listening on port ${port}!`));
