@@ -5,6 +5,24 @@ router.get('/search',function(req, res, next){
     res.render("search.ejs")
 })
 
+router.post('/search', function (req, res, next) {
+    const query = req.sanitize(req.body.query); 
+
+    const searchQuery = `
+        SELECT * FROM projects WHERE projectName LIKE ?
+    `;
+
+    db.query(searchQuery, [`%${query}%`], function (err, results) {
+        if (err) {
+            console.error('Error querying database:', err);
+            return res.status(500).send('Error executing search');
+        }
+
+        res.render('searchResults.ejs', { results });
+    });
+});
+
+
 router.get('/search_result', function (req, res, next) {
     // Search the database
     let sqlquery = "SELECT * FROM books WHERE name LIKE '%" + req.query.search_text + "%'" // query database to get all the books

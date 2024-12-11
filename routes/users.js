@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const bcrypt = require('bcrypt'); 
 const saltRounds = 10; 
+const { check, validationResult } = require('express-validator');
+const expressSanitizer = require('express-sanitizer');
+
+router.use(expressSanitizer()); // Add sanitizer middleware
 
 // Redirect if not logged in
 const redirectLogin = (req, res, next) => {
@@ -19,16 +23,30 @@ router.get('/login', function (req, res, next) {
 
 // Render registration page
 router.get('/register', function (req, res, next) {
-    res.render('register.ejs');
+    res.render('register.ejs', { errors: [] });
 });
 
 // Handle user registration
-router.post('/register', function (req, res, next) {
+router.post('/register', [
+    check('email').isEmail().withMessage('Enter a valid email address'),
+    check('username').notEmpty().withMessage('Username cannot be empty'),
+    check('password')
+        .isLength({ min: 8 }).withMessage('Password must be at least 8 characters long')
+        .matches(/\d/).withMessage('Password must contain at least one number'),
+    check('first').notEmpty().withMessage('First name cannot be empty'),
+    check('last').notEmpty().withMessage('Last name cannot be empty')
+], function (req, res, next) {
     const plainPassword = req.body.password;
-    const username = req.body.username;
-    const firstName = req.body.first;
-    const lastName = req.body.last;
-    const email = req.body.email;
+    const username = req.sanitize(req.body.username); 
+    const firstName = req.sanitize(req.body.first);  
+    const lastName = req.sanitize(req.body.last);     
+    const email = req.sanitize(req.body.email); 
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+        const errorMessages = errors.array().map(err => err.msg);
+        return res.render('register.ejs', { errors: errorMessages });
+    }
 
     bcrypt.hash(plainPassword, saltRounds, function (err, hashedPassword) {
         if (err) {
@@ -44,7 +62,7 @@ router.post('/register', function (req, res, next) {
         db.query(insertUserQuery, [username, firstName, lastName, email, hashedPassword], function (err) {
             if (err) {
                 console.error('Error inserting user into database:', err);
-                return res.status(500).send('Error saving user to the database. Ensure the username or email is not already in use.');
+                return res.render('register.ejs', { errors: ['Error saving user to the database. Ensure the username or email is not already in use.'] });
             }
 
             res.send(`Hello ${firstName} ${lastName}, you are now registered!`);
@@ -52,9 +70,10 @@ router.post('/register', function (req, res, next) {
     });
 });
 
+
 // Handle login
 router.post('/loggedin', function (req, res, next) {
-    const username = req.body.username;
+    const username = req.sanitize(req.body.username); 
     const password = req.body.password;
 
     const selectUserQuery = `
@@ -90,6 +109,7 @@ router.post('/loggedin', function (req, res, next) {
         });
     });
 });
+
 
 // Registered users
 router.get('/list', function (req, res, next) {

@@ -12,6 +12,10 @@ const session = require('express-session');
 const app = express();
 const port = 8000;
 
+const expressSanitizer = require('express-sanitizer');
+var validator = require ('express-validator');
+
+app.use(expressSanitizer());
 // Tell Express that we want to use EJS as the templating engine
 app.set('view engine', 'ejs');
 
