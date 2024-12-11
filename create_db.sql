@@ -18,7 +18,7 @@ CREATE TABLE `users` (
   `firstName` varchar(45) NOT NULL,
   `lastName` varchar(45) NOT NULL,
   `email` varchar(450) NOT NULL,
-  `password` varchar(100) NOT NULL,
+  `hashed_password` varchar(450) NOT NULL,
   PRIMARY KEY (`idusers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
