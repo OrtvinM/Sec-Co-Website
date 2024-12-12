@@ -13,7 +13,7 @@ CREATE TABLE `projects` (
   UNIQUE KEY `idProjects_UNIQUE` (`idProjects`),
   UNIQUE KEY `projectName_UNIQUE` (`projectName`),
   UNIQUE KEY `GitLink_UNIQUE` (`GitLink`)
-) 
+);
 
 -- Drop and recreate the users table
 DROP TABLE IF EXISTS `users`;
@@ -25,7 +25,7 @@ CREATE TABLE `users` (
   `email` varchar(450) NOT NULL,
   `hashed_password` varchar(450) NOT NULL,
   PRIMARY KEY (`idusers`)
-) 
+);
 
 -- Drop and recreate the views table
 DROP TABLE IF EXISTS `views`;
@@ -36,4 +36,4 @@ CREATE TABLE `views` (
   KEY FKprojectID_idx (projectID),
   CONSTRAINT FKprojectID FOREIGN KEY (projectID) REFERENCES projects (idProjects),
   CONSTRAINT FKuserID FOREIGN KEY (userID) REFERENCES users (idusers)
-) 
+); 
