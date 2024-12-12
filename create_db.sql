@@ -1,6 +1,10 @@
-CREATE DATABASE  IF NOT EXISTS `os-portfolio` 
+-- Drop the database if it exists and recreate it
+DROP DATABASE IF EXISTS `os-portfolio`;
+CREATE DATABASE `os-portfolio`;
 USE `os-portfolio`;
-DROP TABLE IF EXISTS projects;
+
+-- Drop and recreate the projects table
+DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
   `idProjects` int NOT NULL AUTO_INCREMENT,
   `projectName` varchar(45) NOT NULL,
@@ -11,6 +15,7 @@ CREATE TABLE `projects` (
   UNIQUE KEY `GitLink_UNIQUE` (`GitLink`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+-- Drop and recreate the users table
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `idusers` int NOT NULL AUTO_INCREMENT,
@@ -22,9 +27,9 @@ CREATE TABLE `users` (
   PRIMARY KEY (`idusers`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-DROP TABLE IF EXISTS views;
-
-CREATE TABLE views (
+-- Drop and recreate the views table
+DROP TABLE IF EXISTS `views`;
+CREATE TABLE `views` (
   userID int NOT NULL,
   projectID int NOT NULL,
   KEY FKuserID_idx (userID),
