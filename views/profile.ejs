@@ -1,62 +1,21 @@
 <!doctype html>
 <html>
 <head>
-    <title>All Projects</title>
+    <title>Your Profile</title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
-    <script>
-        function filterProjects() {
-            const searchValue = document.getElementById('searchBox').value.toLowerCase();
-            const projectItems = document.querySelectorAll('.project-item');
-
-            projectItems.forEach(item => {
-                const text = item.textContent.toLowerCase();
-                if (text.includes(searchValue)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-        }
-    </script>
 </head>
 <body>
-    <h1>All Projects</h1>
+    <h1>Your Profile</h1>
 
     <% if (error) { %>
         <p style="color: red;"><%= error %></p>
-    <% } %>
-
-    <div>
-        <input
-            type="text"
-            id="searchBox"
-            oninput="filterProjects()"
-            placeholder="Search projects..."
-        />
-    </div>
-
-    <h2>Projects in Local Database</h2>
-    <% if (dbResults.length > 0) { %>
-        <ul>
-            <% dbResults.forEach(project => { %>
-                <li class="project-item"><%= project.projectName %></li>
-            <% }) %>
-        </ul>
     <% } else { %>
-        <p>No local projects found.</p>
-    <% } %>
-
-    <h2>GitHub Projects</h2>
-    <% if (githubResults.length > 0) { %>
-        <ul>
-            <% githubResults.forEach(project => { %>
-                <li class="project-item">
-                    <a href="<%= project.html_url %>" target="_blank"><%= project.name %></a> - <%= project.description || 'No description provided' %>
-                </li>
-            <% }) %>
-        </ul>
-    <% } else { %>
-        <p>No GitHub projects found.</p>
+        <div>
+            <p><strong>Username:</strong> <%= user.userName %></p>
+            <p><strong>First Name:</strong> <%= user.firstName %></p>
+            <p><strong>Last Name:</strong> <%= user.lastName %></p>
+            <p><strong>Email:</strong> <%= user.email %></p>
+        </div>
     <% } %>
 </body>
 </html>

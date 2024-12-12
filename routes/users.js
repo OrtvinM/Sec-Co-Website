@@ -146,7 +146,27 @@ router.get('/loggedin', redirectLogin, function (req, res, next) {
 
 // Profile page (requires login)
 router.get('/profile', redirectLogin, function (req, res, next) {
-    res.render('profile.ejs');
+    const username = req.session.userId; // Assuming userId stores the username
+
+    const selectUserQuery = `
+        SELECT userName, firstName, lastName, email 
+        FROM users 
+        WHERE userName = ?
+    `;
+
+    db.query(selectUserQuery, [username], function (err, rows) {
+        if (err) {
+            console.error('Error retrieving user data:', err);
+            return res.status(500).send('Error retrieving user data');
+        }
+
+        if (rows.length === 0) {
+            return res.render('profile.ejs', { error: 'User not found', user: null });
+        }
+
+        const user = rows[0];
+        res.render('profile.ejs', { error: null, user });
+    });
 });
 
 // Logout route
