@@ -4,6 +4,7 @@
     <title>All Projects</title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
     <script>
+        // Function to filter projects dynamically
         function filterProjects() {
             const searchValue = document.getElementById('searchBox').value.toLowerCase();
             const projectItems = document.querySelectorAll('.project-item');
@@ -39,19 +40,22 @@
     <% if (dbResults.length > 0) { %>
         <ul>
             <% dbResults.forEach(project => { %>
-                <li class="project-item"><%= project.projectName %></li>
+                <li class="project-item">
+                    <a href="<%= project.GitLink %>" target="_blank"><%= project.projectName %></a>
+                    - (<%= project.connectedUser || 'No connected user' %>)
+                </li>
             <% }) %>
         </ul>
     <% } else { %>
         <p>No local projects found.</p>
     <% } %>
 
-    <h2>GitHub Projects</h2>
+    <h2>Ortvin M's GitHub Projects</h2>
     <% if (githubResults.length > 0) { %>
         <ul>
             <% githubResults.forEach(project => { %>
                 <li class="project-item">
-                    <a href="<%= project.html_url %>" target="_blank"><%= project.name %></a> - <%= project.description || 'No description provided' %>
+                    <a href="<%= project.html_url %>" target="_blank"><%= project.name %></a> - <%= project.description || 'No description available' %>
                 </li>
             <% }) %>
         </ul>
