@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10; 
 const { check, validationResult } = require('express-validator');
 const expressSanitizer = require('express-sanitizer');
+require('dotenv').config();
 
 router.use(expressSanitizer()); // Add sanitizer middleware
 
@@ -36,11 +37,11 @@ router.post('/register', [
     check('first').notEmpty().withMessage('First name cannot be empty'),
     check('last').notEmpty().withMessage('Last name cannot be empty')
 ], function (req, res, next) {
-    const plainPassword = req.body.password;
-    const username = req.sanitize(req.body.username); 
-    const firstName = req.sanitize(req.body.first);  
-    const lastName = req.sanitize(req.body.last);     
-    const email = req.sanitize(req.body.email); 
+    const plainPassword = req.body.password + process.env.PASSWORD_PEPPER; // Append pepper to password
+    const username = req.sanitize(req.body.username);
+    const firstName = req.sanitize(req.body.first);
+    const lastName = req.sanitize(req.body.last);
+    const email = req.sanitize(req.body.email);
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
@@ -73,8 +74,8 @@ router.post('/register', [
 
 // Handle login
 router.post('/loggedin', function (req, res, next) {
-    const username = req.sanitize(req.body.username); 
-    const password = req.body.password;
+    const username = req.sanitize(req.body.username);
+    const password = req.body.password + process.env.PASSWORD_PEPPER; // Append pepper to password
 
     const selectUserQuery = `
         SELECT hashed_password 
