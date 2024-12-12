@@ -3,6 +3,43 @@
 <head>
     <title>Your Profile</title>
     <link rel="stylesheet" type="text/css" href="/main.css" />
+    <style>
+        .profile-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+        .profile-image {
+            flex-shrink: 0;
+            text-align: center;
+        }
+        .profile-details {
+            flex-grow: 1;
+        }
+        img {
+            border-radius: 10px;
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+        }
+        button {
+            margin-top: 10px;
+            background-color: #a8d3ff; /* Whiter blue */
+            color: #121212; /* Dark text for contrast */
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #d0e7ff; /* Brighter blue on hover */
+            transform: translateY(-2px); /* Subtle hover lift */
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3); /* Stronger shadow */
+        }
+    </style>
 </head>
 <body>
     <h1>Your Profile</h1>
@@ -10,11 +47,21 @@
     <% if (error) { %>
         <p style="color: red;"><%= error %></p>
     <% } else { %>
-        <div>
-            <p><strong>Username:</strong> <%= user.userName %></p>
-            <p><strong>First Name:</strong> <%= user.firstName %></p>
-            <p><strong>Last Name:</strong> <%= user.lastName %></p>
-            <p><strong>Email:</strong> <%= user.email %></p>
+        <div class="profile-container">
+            <div class="profile-image">
+                <% if (imageUrl) { %>
+                    <img id="natureImage" src="<%= imageUrl %>" alt="Nature Image">
+                    <button onclick="window.location.reload()">Refresh Image</button>
+                <% } else { %>
+                    <p>Image unavailable</p>
+                <% } %>
+            </div>
+            <div class="profile-details">
+                <p><strong>Username:</strong> <%= user.userName %></p>
+                <p><strong>First Name:</strong> <%= user.firstName %></p>
+                <p><strong>Last Name:</strong> <%= user.lastName %></p>
+                <p><strong>Email:</strong> <%= user.email %></p>
+            </div>
         </div>
     <% } %>
 </body>

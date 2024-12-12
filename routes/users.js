@@ -5,6 +5,7 @@ const saltRounds = 10;
 const { check, validationResult } = require('express-validator');
 const expressSanitizer = require('express-sanitizer');
 require('dotenv').config();
+const axios = require('axios');
 
 router.use(expressSanitizer()); // Add sanitizer middleware
 
@@ -145,30 +146,37 @@ router.get('/loggedin', redirectLogin, function (req, res, next) {
 });
 
 // Profile page (requires login)
-router.get('/profile', redirectLogin, function (req, res, next) {
-    const username = req.session.userId; // Assuming userId stores the username
-
+router.get('/profile', redirectLogin, async function (req, res, next) {
+    const username = req.session.userId; 
     const selectUserQuery = `
         SELECT userName, firstName, lastName, email 
         FROM users 
         WHERE userName = ?
     `;
 
-    db.query(selectUserQuery, [username], function (err, rows) {
+    db.query(selectUserQuery, [username], async function (err, rows) {
         if (err) {
             console.error('Error retrieving user data:', err);
             return res.status(500).send('Error retrieving user data');
         }
 
         if (rows.length === 0) {
-            return res.render('profile.ejs', { error: 'User not found', user: null });
+            return res.render('profile.ejs', { error: 'User not found', user: null, imageUrl: null });
         }
 
         const user = rows[0];
-        res.render('profile.ejs', { error: null, user });
+
+        let imageUrl = null;
+        try {
+            const response = await axios.get('https://picsum.photos/300/300', { responseType: 'arraybuffer' });
+            imageUrl = `data:image/jpeg;base64,${Buffer.from(response.data).toString('base64')}`;
+        } catch (apiError) {
+            console.error('Error fetching nature image:', apiError.message);
+            imageUrl = null; 
+        }
+        res.render('profile.ejs', { error: null, user, imageUrl });
     });
 });
-
 // Logout route
 router.get('/logout', redirectLogin, (req, res) => {
     req.session.destroy(err => {
