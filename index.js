@@ -29,7 +29,7 @@ app.use(session({
 // Define the database connection
 const db = mysql.createConnection({
     host: 'localhost',
-    user: 'os-portfolio_app',
+    user: 'osportfoliouser',
     password: 'qwertyuiop',
     database: 'os-portfolio'
 });

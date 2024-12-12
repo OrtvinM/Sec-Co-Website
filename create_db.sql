@@ -37,3 +37,7 @@ CREATE TABLE `views` (
   CONSTRAINT FKprojectID FOREIGN KEY (projectID) REFERENCES projects (idProjects),
   CONSTRAINT FKuserID FOREIGN KEY (userID) REFERENCES users (idusers)
 ); 
+
+CREATE USER IF NOT EXISTS 'os-portfolio_app'@'localhost' IDENTIFIED BY 'qwertyuiop';
+GRANT ALL PRIVILEGES ON `os-portfolio`.* TO 'osportfoliouser'@'localhost';
+FLUSH PRIVILEGES;
