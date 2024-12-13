@@ -38,6 +38,6 @@ CREATE TABLE `views` (
   CONSTRAINT FKuserID FOREIGN KEY (userID) REFERENCES users (idusers)
 ); 
 
-CREATE USER IF NOT EXISTS 'os-portfolio_app'@'localhost' IDENTIFIED BY 'qwertyuiop';
+CREATE USER IF NOT EXISTS 'osportfoliouser'@'localhost' IDENTIFIED BY 'qwertyuiop';
 GRANT ALL PRIVILEGES ON `os-portfolio`.* TO 'osportfoliouser'@'localhost';
 FLUSH PRIVILEGES;
